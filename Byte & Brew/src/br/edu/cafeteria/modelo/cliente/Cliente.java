@@ -34,5 +34,9 @@ public class Cliente {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
+	
+	public void acumularXp(double valorGasto) {
+	    this.saldoXP += valorGasto;
+	}
 
 }
