@@ -1,7 +1,7 @@
 package br.edu.cafeteria.modelo.cadastros;
 
-import br.edu.cafeteria.modelo.cliente.Cliente;
 import java.util.ArrayList;
+import br.edu.cafeteria.modelo.cliente.Cliente;
 
 public class CadastroCliente {
 	private ArrayList<Cliente> listaClientes;
@@ -12,6 +12,7 @@ public class CadastroCliente {
 	
 	public void adicionar(Cliente cliente) {
 		listaClientes.add(cliente);
+		System.out.println("Cliente cadastrado: " + cliente.getNome());
 	}
 	
 	public Cliente buscarCpf(String cpf) {
