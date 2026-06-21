@@ -11,4 +11,8 @@ public class ClienteVIP extends Cliente {
 		this.setSaldoXP(this.getSaldoXP() + valorGasto * 2);
 
 }
+
+	public String toString() {
+		return "[VIP] " + super.toString();
+	}
 }

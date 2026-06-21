@@ -14,6 +14,11 @@ public class CadastroCliente {
 	
 	 // Método para cadastrar cliente STANDARD (apenas nome e cpf)
     public void cadastrarStandard(String nome, String cpf) {
+    	if (buscarCpf(cpf) != null) {
+    		System.out.println("   CPF ja cadastrado!");
+    		return;
+    	}
+
         ClienteStandard novoCliente = new ClienteStandard(nome, cpf);
         listaClientes.add(novoCliente);
         totalClientes++;
@@ -24,6 +29,11 @@ public class CadastroCliente {
 	}
     
     public void cadastrarVip(String nome, String cpf) {
+    	if (buscarCpf(cpf) != null) {
+    		System.out.println("   CPF ja cadastrado!");
+    		return;
+    	}
+
         ClienteVIP novoCliente = new ClienteVIP(nome, cpf);
         listaClientes.add(novoCliente);
         totalClientes++;
@@ -62,6 +72,11 @@ public class CadastroCliente {
         return totalClientes;
 	}
 	public void listaClientes() {
+	 if (listaClientes.isEmpty()) {
+		 System.out.println("Nenhum cliente cadastrado.");
+		 return;
+	 }
+
 	 System.out.println("LISTA DE CLIENTES (" + totalClientes + "):");
      for (Cliente c : listaClientes) 
          System.out.println("   " + c);

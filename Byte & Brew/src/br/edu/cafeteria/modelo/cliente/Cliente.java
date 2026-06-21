@@ -20,6 +20,10 @@ public abstract class Cliente {
 	public String getNome() {
 		return nome;
 	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 	
 	public double getSaldoXP() {
 		return saldoXP;
@@ -54,10 +58,10 @@ public abstract class Cliente {
  // Método abstrato - cada tipo de cliente tem benefício diferente
    // public abstract double aplicarDesconto(double valorCompra);
     
-   // @Override
-   // public String toString() {
-     //   return "Cliente: " + nome + " | CPF: " + cpf + " | XP: " + saldoXP + " | Pontos: " + pontosAcumulados;
-   // }
+   @Override
+   public String toString() {
+       return "Cliente: " + nome + " | CPF: " + cpf + " | XP: " + saldoXP + " | Pontos: " + pontosAcumulados;
+   }
 //}
 
 }
