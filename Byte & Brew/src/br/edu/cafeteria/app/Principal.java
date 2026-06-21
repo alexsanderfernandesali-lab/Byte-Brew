@@ -1,5 +1,7 @@
 package br.edu.cafeteria.app;
 
+import br.edu.cafeteria.modelo.atendente.Atendente;
+import br.edu.cafeteria.modelo.cadastros.CadastroAtendente;
 import br.edu.cafeteria.modelo.cadastros.CadastroCliente;
 import br.edu.cafeteria.modelo.cadastros.CadastroProduto;
 import br.edu.cafeteria.modelo.cliente.Cliente;
@@ -13,8 +15,10 @@ public class Principal {
         Scanner scanner = new Scanner(System.in);
         CadastroProduto cardapio = new CadastroProduto();
         CadastroCliente cadastroCliente = new CadastroCliente();
+        CadastroAtendente cadastroAtendente = new CadastroAtendente();
 
         carregarProdutosIniciais(cardapio);
+        carregarAtendentesIniciais(cadastroAtendente);
 
         int opcao;
         do {
@@ -22,6 +26,7 @@ public class Principal {
             System.out.println("1 - Gerenciar produtos");
             System.out.println("2 - Gerenciar clientes");
             System.out.println("3 - Mostrar cardapio");
+            System.out.println("4 - Atendentes");
             System.out.println("0 - Sair");
             System.out.print("Escolha uma opcao: ");
 
@@ -36,6 +41,9 @@ public class Principal {
                     break;
                 case 3:
                     cardapio.listarProdutos();
+                    break;
+                case 4:
+                    menuAtendentes(scanner, cadastroAtendente);
                     break;
                 case 0:
                     System.out.println("Sistema encerrado.");
@@ -53,6 +61,12 @@ public class Principal {
         cardapio.adicionarProduto(new Bebidas("Pocao de Mana", 7.00, 102, 10, "G", 0, false));
         cardapio.adicionarProduto(new Comidas("Lembas Bread", 12.00, 201, 8, 20, true, false));
         cardapio.adicionarProduto(new Comidas("Portal Cake", 15.00, 202, 5, 30, false, true));
+    }
+
+    private static void carregarAtendentesIniciais(CadastroAtendente cadastroAtendente) {
+        cadastroAtendente.adicionarAtendente(new Atendente("Lucas"));
+        cadastroAtendente.adicionarAtendente(new Atendente("Pedro"));
+        cadastroAtendente.adicionarAtendente(new Atendente("Tiago"));
     }
 
     private static void menuProdutos(Scanner scanner, CadastroProduto cardapio) {
@@ -313,6 +327,46 @@ public class Principal {
         System.out.print("Digite o CPF: ");
         String cpf = scanner.nextLine();
         cadastroCliente.removerCpf(cpf);
+    }
+
+    private static void menuAtendentes(Scanner scanner, CadastroAtendente cadastroAtendente) {
+        int opcao;
+        do {
+            System.out.println("\n--- ATENDENTES ---");
+            System.out.println("1 - Listar atendentes");
+            System.out.println("2 - Buscar atendente por nome");
+            System.out.println("0 - Voltar");
+            System.out.print("Escolha uma opcao: ");
+
+            opcao = lerInteiro(scanner);
+
+            switch (opcao) {
+                case 1:
+                    cadastroAtendente.listarAtendentes();
+                    break;
+                case 2:
+                    buscarAtendente(scanner, cadastroAtendente);
+                    break;
+                case 0:
+                    System.out.println("Voltando ao menu principal.");
+                    break;
+                default:
+                    System.out.println("Opcao invalida.");
+            }
+        } while (opcao != 0);
+    }
+
+    private static void buscarAtendente(Scanner scanner, CadastroAtendente cadastroAtendente) {
+        System.out.print("Digite o nome do atendente: ");
+        String nome = scanner.nextLine();
+        Atendente atendente = cadastroAtendente.buscarPorNome(nome);
+
+        if (atendente == null) {
+            System.out.println("Atendente nao encontrado.");
+            return;
+        }
+
+        System.out.println(atendente);
     }
 
     private static void exibirProduto(Produto produto) {
