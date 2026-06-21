@@ -1,28 +1,34 @@
 package br.edu.cafeteria.modelo.atendente;
 
-import java.util.ArrayList;
-
 
 public class Atendente {
-	private ArrayList<Atendente>listaAtendentes;
 	private String nome;
+	private int id;
+	private static int contadorId = 1;
 	
-	public Atendente(String nome){
-	this.listaAtendentes = new ArrayList<>();
+	public Atendente(String nome) {
 	this.nome = nome;
-	}
-
-	//precisa atrelar atendente ao numero da comanda
-     Atendente atendente1 = (new Atendente("Lucas"));
-     Atendente atendente2 = (new Atendente("Pedro"));
-     Atendente atendente3 = (new Atendente("Tiago"));
-	
-	public String getNome() {
-		return nome;
+	this.id = contadorId++;
 	}
 	
-	public void setNome(String nome) {
-		this.nome = nome;
+	 public String getNome() {
+	        return nome;
+	    }
+	    
+	    public void setNome(String nome) {
+	        this.nome = nome;
+	    }
+	    
+	    public int getId() {
+	        return id;
+	    }
+	    
+	    public void setId(int id) {
+	        this.id = id;
+	    }
+	    
+	    public String toString() {
+	        return "Atendente #" + id + ": " + nome;
+	    }
 	}
 
-}

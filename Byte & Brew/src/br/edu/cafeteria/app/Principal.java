@@ -13,34 +13,39 @@ public class Principal {
     	Scanner scanner = new Scanner(System.in);
         CadastroProduto cardapio = new CadastroProduto();
         
+        //PRODUTOS VERIFICAR SE INSTANCIA LOS EM OUTRO LUGAR
         cardapio.adicionarProduto(new Bebidas("Café do Programador", 8.50, 101, 15, "M", 120, true));
         cardapio.adicionarProduto(new Bebidas("Poção de Mana", 7.00, 102, 10, "G", 0, false));
         cardapio.adicionarProduto(new Comidas("Lembas Bread", 12.00, 201, 8, 20, true, false));
         cardapio.adicionarProduto(new Comidas("Portal Cake", 15.00, 202, 5, 30, false, true));
         
+        CadastroAtendente cadastroAtendente = new CadastroAtendente();
+        
+       
+        cadastroAtendente.adicionarAtendente(new Atendente( "Lucas"));
+        cadastroAtendente.adicionarAtendente(new Atendente( "Pedro"));
+        cadastroAtendente.adicionarAtendente(new Atendente( "Tiago"));
         
         System.out.println("--- BEM VINDO A CAFETERIA BYTE & BREW ! ---");
         System.out.println("Escolha seu Atendente:");
-        System.out.println("1 - Lucas");
-        System.out.println("2 - Pedro");
-        System.out.println("3 - Tiago");
-        System.out.print("Digite o número do atendente: ");
-        int opcaoAtendente = scanner.nextInt();
-        scanner.nextLine();
+        cadastroAtendente.listarAtendentes(); 
+        System.out.print("Digite o nome do atendente: ");
+        String opcaoAtendente = scanner.nextLine();
         
-        //Precisa organizar atendente
-        Atendente atendenteEscolhido = null;
-       
-       
-        
-        System.out.println("Olá meu nome é e serei seu atendente");
+        Atendente atendenteEscolhido = cadastroAtendente.buscarPorNome(opcaoAtendente);
+
+        if (atendenteEscolhido == null) {
+        System.out.println("Atendente não encontrado! Tente novamente.");
+        } else {
+        System.out.println("Olá, meu nome é " + atendenteEscolhido.getNome() + " e serei seu atendente!");
+      } 
         System.out.println("Aqui na Byte & Brew possuímos um sistema de acumulo de pontos"
         		+ " que a cada compra realizada você acumula pontos que poderá usar em proximas compras sempre que desejar"
         		+ "bastara me informar seu nome e CPF, tem interesse?"); 
        
         String escolhaCadastro = scanner.nextLine();
         
-      //  CadastroCliente cliente = new CadastroCliente();
+      //  CadastroCliente cliente = new CadastroCliente(); VERIFICAR ESSA LINHA
         
         if (escolhaCadastro.equalsIgnoreCase("sim")) {
         	
@@ -52,16 +57,13 @@ public class Principal {
             
             CadastroCliente cadastroCliente = new CadastroCliente();
 			cadastroCliente.cadastrarStandard(nome, cpf);
-            
-            
-            
         
         } else { 
             System.out.println("Tudo bem! Caso mude de ideia, é só nos avisar.");
         
         }
        
-        
+        //----CARDAPIO-----
         System.out.println("\nEsse é o nosso cardápio:");
         System.out.println("---CARDÁPIO---");
         cardapio.listarProdutos();

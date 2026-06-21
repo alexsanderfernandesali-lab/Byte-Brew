@@ -1,7 +1,8 @@
 package br.edu.cafeteria.modelo.pedido;
 
 import br.edu.cafeteria.modelo.cliente.Cliente;
-import br.edu.cafeteria.modelo.produto.Produto;
+import br.edu.cafeteria.modelo.produto.*;
+import br.edu.cafeteria.modelo.atendente.Atendente;
 import java.util.ArrayList;
 
 public class Pedido {
@@ -9,13 +10,16 @@ public class Pedido {
     private int numeroPedido;
     private ArrayList<ItemPedido> listaItens;  
     private Cliente cliente;
-    private String atendente;
+    private Atendente atendente;
+    private double valorTotal;
+    private String status;
 
-    public Pedido(Cliente cliente, String atendente) {
+    public Pedido(Cliente cliente, Atendente atendente) {
         this.cliente = cliente;
         this.atendente = atendente;
         this.listaItens = new ArrayList<>();
         this.numeroPedido = ++contadorPedidos;
+        
     }
 
     public void adicionarItem(Produto produto, int quantidade) {
@@ -27,27 +31,34 @@ public class Pedido {
         } else {
             System.out.println("Estoque insuficiente! Disponível: " + produto.getEstoque());
         }
-    }
+    }    
+    
+    
+    public void finalizarPedido() {
+        this.status = "FINALIZADO";
+    System.out.println(" Pedido #" + numeroPedido + " finalizado!");
+    System.out.println("   Atendente: " + atendente.getNome());
+    //System.out.println("   Cliente: " + (cliente != null ? cliente.getNome() : "NÃO CADASTRADO")); nome do cliente ou anonimo
+    //SYSOUT valor TOTAL
+        }
 
     public double calcularTotal() {
         double total = 0.0;
         for (ItemPedido item : listaItens) {  
-            total += item.getSubtotal();
+           total += item.getSubtotal();
         }
         return total;
-    }
+   }
 
     public void exibirResumo() {
         System.out.println("\n=== RESUMO DO PEDIDO #" + numeroPedido + " ===");
         System.out.println("Cliente: " + cliente.getNome());
         System.out.println("Atendente: " + atendente);
         System.out.println("\nItens:");
-        for (ItemPedido item : listaItens) {  // ← MUDOU AQUI!
-            System.out.println(" - " + item.getProduto().getNome() 
-                + " (R$ " + item.getProduto().getPreco() + ") x " 
-                + item.getQuantidade() + " = R$ " + item.getSubtotal());
+        for (ItemPedido item : listaItens) {  
+            System.out.println(" - " + item.getProduto());
         }
-        System.out.println("\nTotal: R$ " + String.format("%.2f", calcularTotal()));
+        System.out.println("\nTotal: R$ " + String.format("%.2f", getValorTotal()));
     }
 
     public int totalItens() {
@@ -69,12 +80,20 @@ public class Pedido {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
+    
+    public double getValorTotal() {
+        return valorTotal;
+    }
+    
+    public String getStatus() {
+        return status;
+    }
 
-    public String getAtendente() {
+    public Atendente getAtendente() {
         return atendente;
     }
 
-    public void setAtendente(String atendente) {
+    public void setAtendente(Atendente atendente) {
         this.atendente = atendente;
     }
 }
