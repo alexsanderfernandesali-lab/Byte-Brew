@@ -1,107 +1,374 @@
 package br.edu.cafeteria.app;
 
-
-import br.edu.cafeteria.modelo.cadastros.*;
-import br.edu.cafeteria.modelo.atendente.*;
-import br.edu.cafeteria.modelo.produto.*;
-import br.edu.cafeteria.modelo.cliente.*;
+import br.edu.cafeteria.modelo.cadastros.CadastroCliente;
+import br.edu.cafeteria.modelo.cadastros.CadastroProduto;
+import br.edu.cafeteria.modelo.cliente.Cliente;
+import br.edu.cafeteria.modelo.produto.Bebidas;
+import br.edu.cafeteria.modelo.produto.Comidas;
+import br.edu.cafeteria.modelo.produto.Produto;
 import java.util.Scanner;
 
 public class Principal {
-
     public static void main(String[] args) {
-    	Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         CadastroProduto cardapio = new CadastroProduto();
-        
-        cardapio.adicionarProduto(new Bebidas("Café do Programador", 8.50, 101, 15, "M", 120, true));
-        cardapio.adicionarProduto(new Bebidas("Poção de Mana", 7.00, 102, 10, "G", 0, false));
+        CadastroCliente cadastroCliente = new CadastroCliente();
+
+        carregarProdutosIniciais(cardapio);
+
+        int opcao;
+        do {
+            System.out.println("\n--- BYTE & BREW ---");
+            System.out.println("1 - Gerenciar produtos");
+            System.out.println("2 - Gerenciar clientes");
+            System.out.println("3 - Mostrar cardapio");
+            System.out.println("0 - Sair");
+            System.out.print("Escolha uma opcao: ");
+
+            opcao = lerInteiro(scanner);
+
+            switch (opcao) {
+                case 1:
+                    menuProdutos(scanner, cardapio);
+                    break;
+                case 2:
+                    menuClientes(scanner, cadastroCliente);
+                    break;
+                case 3:
+                    cardapio.listarProdutos();
+                    break;
+                case 0:
+                    System.out.println("Sistema encerrado.");
+                    break;
+                default:
+                    System.out.println("Opcao invalida.");
+            }
+        } while (opcao != 0);
+
+        scanner.close();
+    }
+
+    private static void carregarProdutosIniciais(CadastroProduto cardapio) {
+        cardapio.adicionarProduto(new Bebidas("Cafe do Programador", 8.50, 101, 15, "M", 120, true));
+        cardapio.adicionarProduto(new Bebidas("Pocao de Mana", 7.00, 102, 10, "G", 0, false));
         cardapio.adicionarProduto(new Comidas("Lembas Bread", 12.00, 201, 8, 20, true, false));
         cardapio.adicionarProduto(new Comidas("Portal Cake", 15.00, 202, 5, 30, false, true));
-        
-        
-        System.out.println("--- BEM VINDO A CAFETERIA BYTE & BREW ! ---");
-        System.out.println("Escolha seu Atendente:");
-        System.out.println("1 - Lucas");
-        System.out.println("2 - Pedro");
-        System.out.println("3 - Tiago");
-        System.out.print("Digite o número do atendente: ");
-        int opcaoAtendente = scanner.nextInt();
+    }
+
+    private static void menuProdutos(Scanner scanner, CadastroProduto cardapio) {
+        int opcao;
+        do {
+            System.out.println("\n--- GERENCIAR PRODUTOS ---");
+            System.out.println("1 - Cadastrar produto");
+            System.out.println("2 - Listar produtos");
+            System.out.println("3 - Buscar produto por codigo");
+            System.out.println("4 - Atualizar produto");
+            System.out.println("5 - Remover produto");
+            System.out.println("0 - Voltar");
+            System.out.print("Escolha uma opcao: ");
+
+            opcao = lerInteiro(scanner);
+
+            switch (opcao) {
+                case 1:
+                    cadastrarProduto(scanner, cardapio);
+                    break;
+                case 2:
+                    cardapio.listarProdutos();
+                    break;
+                case 3:
+                    buscarProduto(scanner, cardapio);
+                    break;
+                case 4:
+                    atualizarProduto(scanner, cardapio);
+                    break;
+                case 5:
+                    removerProduto(scanner, cardapio);
+                    break;
+                case 0:
+                    System.out.println("Voltando ao menu principal.");
+                    break;
+                default:
+                    System.out.println("Opcao invalida.");
+            }
+        } while (opcao != 0);
+    }
+
+    private static void cadastrarProduto(Scanner scanner, CadastroProduto cardapio) {
+        System.out.println("\nTipo de produto:");
+        System.out.println("1 - Comida");
+        System.out.println("2 - Bebida");
+        System.out.print("Escolha uma opcao: ");
+        int tipo = lerInteiro(scanner);
+
+        System.out.print("Codigo: ");
+        int codigo = lerInteiro(scanner);
+
+        if (cardapio.buscarPorCodigo(codigo) != null) {
+            System.out.println("Ja existe um produto com esse codigo.");
+            return;
+        }
+
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+
+        System.out.print("Preco: ");
+        double preco = lerDouble(scanner);
+
+        System.out.print("Quantidade em estoque: ");
+        int estoque = lerInteiro(scanner);
+
+        if (tipo == 1) {
+            System.out.print("Tempo de preparo em minutos: ");
+            int tempo = lerInteiro(scanner);
+
+            System.out.print("E vegano? (s/n): ");
+            boolean vegano = lerSimNao(scanner);
+
+            System.out.print("E sem gluten? (s/n): ");
+            boolean semGluten = lerSimNao(scanner);
+
+            cardapio.adicionarProduto(new Comidas(nome, preco, codigo, estoque, tempo, vegano, semGluten));
+        } else if (tipo == 2) {
+            System.out.print("Tamanho (P/M/G): ");
+            String tamanho = scanner.nextLine();
+
+            System.out.print("Cafeina em mg: ");
+            int cafeina = lerInteiro(scanner);
+
+            System.out.print("E quente? (s/n): ");
+            boolean quente = lerSimNao(scanner);
+
+            cardapio.adicionarProduto(new Bebidas(nome, preco, codigo, estoque, tamanho, cafeina, quente));
+        } else {
+            System.out.println("Tipo invalido. Produto nao cadastrado.");
+        }
+    }
+
+    private static void buscarProduto(Scanner scanner, CadastroProduto cardapio) {
+        System.out.print("Digite o codigo do produto: ");
+        int codigo = lerInteiro(scanner);
+        Produto produto = cardapio.buscarPorCodigo(codigo);
+
+        if (produto == null) {
+            System.out.println("Produto nao encontrado.");
+            return;
+        }
+
+        exibirProduto(produto);
+    }
+
+    private static void atualizarProduto(Scanner scanner, CadastroProduto cardapio) {
+        System.out.print("Digite o codigo do produto: ");
+        int codigo = lerInteiro(scanner);
+        Produto produto = cardapio.buscarPorCodigo(codigo);
+
+        if (produto == null) {
+            System.out.println("Produto nao encontrado.");
+            return;
+        }
+
+        System.out.println("Produto atual:");
+        exibirProduto(produto);
+
+        System.out.print("Novo nome: ");
+        produto.setNome(scanner.nextLine());
+
+        System.out.print("Novo preco: ");
+        produto.setPreco(lerDouble(scanner));
+
+        System.out.print("Novo estoque: ");
+        produto.setEstoque(lerInteiro(scanner));
+
+        if (produto instanceof Comidas) {
+            Comidas comida = (Comidas) produto;
+            System.out.print("Novo tempo de preparo em minutos: ");
+            comida.setTempo(lerInteiro(scanner));
+
+            System.out.print("E vegano? (s/n): ");
+            comida.setVegan(lerSimNao(scanner));
+
+            System.out.print("E sem gluten? (s/n): ");
+            comida.setSgluten(lerSimNao(scanner));
+        } else if (produto instanceof Bebidas) {
+            Bebidas bebida = (Bebidas) produto;
+            System.out.print("Novo tamanho (P/M/G): ");
+            bebida.setTamanho(scanner.nextLine());
+
+            System.out.print("Nova cafeina em mg: ");
+            bebida.setCafeina(lerInteiro(scanner));
+
+            System.out.print("E quente? (s/n): ");
+            bebida.setQuente(lerSimNao(scanner));
+        }
+
+        System.out.println("Produto atualizado com sucesso.");
+    }
+
+    private static void removerProduto(Scanner scanner, CadastroProduto cardapio) {
+        System.out.print("Digite o codigo do produto: ");
+        int codigo = lerInteiro(scanner);
+        cardapio.removerPorCodigo(codigo);
+    }
+
+    private static void menuClientes(Scanner scanner, CadastroCliente cadastroCliente) {
+        int opcao;
+        do {
+            System.out.println("\n--- GERENCIAR CLIENTES ---");
+            System.out.println("1 - Cadastrar cliente Standard");
+            System.out.println("2 - Cadastrar cliente VIP");
+            System.out.println("3 - Listar clientes");
+            System.out.println("4 - Buscar cliente por CPF");
+            System.out.println("5 - Atualizar cliente");
+            System.out.println("6 - Remover cliente");
+            System.out.println("0 - Voltar");
+            System.out.print("Escolha uma opcao: ");
+
+            opcao = lerInteiro(scanner);
+
+            switch (opcao) {
+                case 1:
+                    cadastrarClienteStandard(scanner, cadastroCliente);
+                    break;
+                case 2:
+                    cadastrarClienteVip(scanner, cadastroCliente);
+                    break;
+                case 3:
+                    cadastroCliente.listaClientes();
+                    break;
+                case 4:
+                    buscarCliente(scanner, cadastroCliente);
+                    break;
+                case 5:
+                    atualizarCliente(scanner, cadastroCliente);
+                    break;
+                case 6:
+                    removerCliente(scanner, cadastroCliente);
+                    break;
+                case 0:
+                    System.out.println("Voltando ao menu principal.");
+                    break;
+                default:
+                    System.out.println("Opcao invalida.");
+            }
+        } while (opcao != 0);
+    }
+
+    private static void cadastrarClienteStandard(Scanner scanner, CadastroCliente cadastroCliente) {
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+
+        System.out.print("CPF: ");
+        String cpf = scanner.nextLine();
+
+        cadastroCliente.cadastrarStandard(nome, cpf);
+    }
+
+    private static void cadastrarClienteVip(Scanner scanner, CadastroCliente cadastroCliente) {
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+
+        System.out.print("CPF: ");
+        String cpf = scanner.nextLine();
+
+        cadastroCliente.cadastrarVip(nome, cpf);
+    }
+
+    private static void buscarCliente(Scanner scanner, CadastroCliente cadastroCliente) {
+        System.out.print("Digite o CPF: ");
+        String cpf = scanner.nextLine();
+        Cliente cliente = cadastroCliente.buscarCpf(cpf);
+
+        if (cliente == null) {
+            System.out.println("Cliente nao encontrado.");
+            return;
+        }
+
+        exibirCliente(cliente);
+    }
+
+    private static void atualizarCliente(Scanner scanner, CadastroCliente cadastroCliente) {
+        System.out.print("Digite o CPF: ");
+        String cpf = scanner.nextLine();
+        Cliente cliente = cadastroCliente.buscarCpf(cpf);
+
+        if (cliente == null) {
+            System.out.println("Cliente nao encontrado.");
+            return;
+        }
+
+        System.out.println("Cliente atual:");
+        exibirCliente(cliente);
+
+        System.out.print("Novo nome: ");
+        cliente.setNome(scanner.nextLine());
+
+        System.out.print("Novo saldo XP: ");
+        cliente.setSaldoXP(lerDouble(scanner));
+
+        System.out.println("Cliente atualizado com sucesso.");
+    }
+
+    private static void removerCliente(Scanner scanner, CadastroCliente cadastroCliente) {
+        System.out.print("Digite o CPF: ");
+        String cpf = scanner.nextLine();
+        cadastroCliente.removerCpf(cpf);
+    }
+
+    private static void exibirProduto(Produto produto) {
+        System.out.println("Codigo: " + produto.getCodigo());
+        System.out.println("Nome: " + produto.getNome());
+        System.out.println("Preco: R$ " + produto.getPreco());
+        System.out.println("Estoque: " + produto.getEstoque());
+
+        if (produto instanceof Comidas) {
+            Comidas comida = (Comidas) produto;
+            System.out.println("Tipo: Comida");
+            System.out.println("Tempo de preparo: " + comida.getTempo() + " minutos");
+            System.out.println("Vegano: " + formatarBooleano(comida.isVegan()));
+            System.out.println("Sem gluten: " + formatarBooleano(comida.isSgluten()));
+        } else if (produto instanceof Bebidas) {
+            Bebidas bebida = (Bebidas) produto;
+            System.out.println("Tipo: Bebida");
+            System.out.println("Tamanho: " + bebida.getTamanho());
+            System.out.println("Cafeina: " + bebida.getCafeina() + " mg");
+            System.out.println("Quente: " + formatarBooleano(bebida.isQuente()));
+        }
+    }
+
+    private static void exibirCliente(Cliente cliente) {
+        System.out.println("Nome: " + cliente.getNome());
+        System.out.println("CPF: " + cliente.getCpf());
+        System.out.println("Saldo XP: " + cliente.getSaldoXP());
+        System.out.println("Tipo: " + cliente.getClass().getSimpleName());
+    }
+
+    private static int lerInteiro(Scanner scanner) {
+        while (!scanner.hasNextInt()) {
+            System.out.print("Digite um numero inteiro valido: ");
+            scanner.nextLine();
+        }
+        int valor = scanner.nextInt();
         scanner.nextLine();
-        
-        //Precisa organizar atendente
-        Atendente atendenteEscolhido = null;
-       
-       
-        
-        System.out.println("Olá meu nome é e serei seu atendente");
-        System.out.println("Aqui na Byte & Brew possuímos um sistema de acumulo de pontos"
-        		+ " que a cada compra realizada você acumula pontos que poderá usar em proximas compras sempre que desejar"
-        		+ "bastara me informar seu nome e CPF, tem interesse?"); 
-       
-        String escolhaCadastro = scanner.nextLine();
-        
-      //  CadastroCliente cliente = new CadastroCliente();
-        
-        if (escolhaCadastro.equalsIgnoreCase("sim")) {
-        	
-        	System.out.print("Digite seu nome: ");
-            String nome = scanner.nextLine();
-            
-            System.out.print("Digite seu CPF: ");
-            String cpf = scanner.nextLine();
-            
-            CadastroCliente cadastroCliente = new CadastroCliente();
-			cadastroCliente.cadastrarStandard(nome, cpf);
-            
-            
-            
-        
-        } else { 
-            System.out.println("Tudo bem! Caso mude de ideia, é só nos avisar.");
-        
+        return valor;
+    }
+
+    private static double lerDouble(Scanner scanner) {
+        while (!scanner.hasNextDouble()) {
+            System.out.print("Digite um numero valido: ");
+            scanner.nextLine();
         }
-       
-        
-        System.out.println("\nEsse é o nosso cardápio:");
-        System.out.println("---CARDÁPIO---");
-        cardapio.listarProdutos();
-        
-        System.out.println("\nComo deseja pesquisar?");
-        System.out.println("1 - Por código");
-        System.out.println("2 - Por nome");
-        System.out.print("Digite a opção: ");
-        int opcaoPesquisa = scanner.nextInt();
-        scanner.nextLine(); // consumir quebra de linha
-        
-        switch (opcaoPesquisa) {
-            case 1:
-                System.out.print("Digite o código do produto: ");
-                int codigo = scanner.nextInt();
-                Produto produtoPorCodigo = cardapio.buscarPorCodigo(codigo);
-                if (produtoPorCodigo != null) {
-                    System.out.println("Produto encontrado: " + produtoPorCodigo);
-                } else {
-                    System.out.println("Produto não encontrado!");
-                }
-                break;
-            case 2:
-                System.out.print("Digite o nome do produto: ");
-              //  String nomeProduto = scanner.nextLine();
-                //ArrayList<Produto> produtosPorNome = cardapio.buscarPorNome(nomeProduto);
-                //if (!produtosPorNome.isEmpty()) {
-                    System.out.println("Produtos encontrados:");
-                  //  for (Produto p : produtosPorNome) {
-                    //    System.out.println(p);
-                //    }
-                //} else {
-                  //  System.out.println("Nenhum produto encontrado com esse nome!");
-                //}
-                //break;
-            //default:
-                System.out.println("Opção inválida!");
-                break;
-        }
-        
-        scanner.close();
+        double valor = scanner.nextDouble();
+        scanner.nextLine();
+        return valor;
+    }
+
+    private static boolean lerSimNao(Scanner scanner) {
+        String resposta = scanner.nextLine();
+        return resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim");
+    }
+
+    private static String formatarBooleano(boolean valor) {
+        return valor ? "Sim" : "Nao";
     }
 }
