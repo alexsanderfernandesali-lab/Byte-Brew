@@ -5,6 +5,13 @@ public class ClienteStandard extends Cliente {
 		super(nome, cpf);
 		
 	}
+
+	// pessoa b: implementar método acumularXp() polimórfico
+	@Override
+	public void acumularXp(double valorGasto) {
+		this.setSaldoXP(this.getSaldoXP() + valorGasto);
+	}
+	
 	 public double aplicarDesconto(double valorCompra) {
 	        int bonus = getPontosAcumulados() / 100;
 	        double desconto = valorCompra * (bonus * 0.05);
