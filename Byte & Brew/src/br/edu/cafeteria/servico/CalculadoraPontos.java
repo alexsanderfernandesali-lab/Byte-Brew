@@ -28,12 +28,16 @@ public class CalculadoraPontos {
     } 
 
     private void calcularPontosVip(ClienteVIP cliente, double valor) {
+        int pontos = (int) (valor * 2);
         cliente.acumularXp(valor);
+        System.out.println("Pontos acumulados (VIP): " + pontos + " XP.");
     }
     
     
     private void calcularPontosStandard(ClienteStandard cliente, double valor) {
+        int pontos = (int) valor;
         cliente.acumularXp(valor);
+        System.out.println("Pontos acumulados (Standard): " + pontos + " XP.");
     }
 
 } 
