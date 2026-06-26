@@ -80,13 +80,19 @@ public class Pedido {
 
     public void exibirResumo() {
         System.out.println("\n=== RESUMO DO PEDIDO #" + numeroPedido + " ===");
-        System.out.println("Cliente: " + cliente.getNome());
+        if (cliente != null) {
+        System.out.println("Cliente: " + cliente.getNome() + "CPF" + cliente.getCpf());
+        }else {
+        	System.out.println("Cliente ANÔNIMO");
+        }
         System.out.println("Atendente: " + atendente);
         System.out.println("\nItens:");
         for (ItemPedido item : listaItens) {  
-            System.out.println(" - " + item.getProduto());
+        	System.out.println(" - " + item.getProduto().getNome() 
+        	        + " | R$ " + String.format("%.2f", item.getProduto().getPreco()) + " cada"
+        	        + " | Quantidade: " + item.getQuantidade());
         }
-        System.out.println("\nTotal: R$ " + String.format("%.2f", getValorTotal()));
+       // System.out.println("\nTotal: R$ " + String.format("%.2f", getValorTotal()));
     }
 
     public int totalItens() {
