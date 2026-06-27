@@ -41,23 +41,6 @@ public abstract class Cliente {
         return pontosAcumulados;
 	}
     
-    // Métodos para acumular pontos (controle interno)
-  //  public void adicionarPontos(int pontos) {
-    //    this.pontosAcumulados += pontos;
-     //   this.saldoXP += pontos; // cada ponto = 1 XP
-  //  }
-    
-   // public void usarPontos(int pontos) {
-    //    if (pontos <= this.pontosAcumulados) {
-          //  this.pontosAcumulados -= pontos;
-     //       this.saldoXP -= pontos;
-      //  } else {
-       //     System.out.println("Saldo de pontos insuficiente!");
-       // }
-   // }
- // Método abstrato - cada tipo de cliente tem benefício diferente
-   // public abstract double aplicarDesconto(double valorCompra);
-    
    @Override
    public String toString() {
        return "Cliente: " + nome + " | CPF: " + cpf + " | XP: " + saldoXP + " | Pontos: " + pontosAcumulados;

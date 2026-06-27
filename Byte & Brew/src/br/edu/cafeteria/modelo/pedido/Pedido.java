@@ -79,13 +79,15 @@ public class Pedido {
    }
 
     public void exibirResumo() {
-        System.out.println("\n=== RESUMO DO PEDIDO #" + numeroPedido + " ===");
+    	System.out.println("\n--- PEDIDO FINALIZADO ---");
+        System.out.println("Numero da comanda: " + getNumeroPedido());
+        System.out.println("Atendente: " + atendente.getNome());
+
         if (cliente != null) {
-        System.out.println("Cliente: " + cliente.getNome() + "CPF" + cliente.getCpf());
-        }else {
-        	System.out.println("Cliente ANÔNIMO");
+            System.out.println("Cliente: " + cliente.getNome() + " (CPF: " + cliente.getCpf() + ")");
+        } else {
+            System.out.println("Cliente: ANONIMO");
         }
-        System.out.println("Atendente: " + atendente);
         System.out.println("\nItens:");
         for (ItemPedido item : listaItens) {  
         	System.out.println(" - " + item.getProduto().getNome() 

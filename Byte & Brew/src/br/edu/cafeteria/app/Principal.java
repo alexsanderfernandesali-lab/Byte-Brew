@@ -62,7 +62,6 @@ public class Principal {
         scanner.close();
     }
     
-    // ==================== NOVO MÉTODO: ABRIR PEDIDO ====================
 
     private static void abrirNovoPedido(Scanner scanner, CadastroProduto cardapio,
                                         CadastroCliente cadastroCliente,
@@ -70,7 +69,6 @@ public class Principal {
 
         System.out.println("\n--- NOVO PEDIDO ---");
 
-        // 1. ESCOLHER ATENDENTE
         System.out.println("Escolha o atendente:");
         cadastroAtendente.listarAtendentes();
         System.out.print("Digite o nome do atendente: ");
@@ -82,7 +80,6 @@ public class Principal {
             return;
         }
 
-        // 2. IDENTIFICAR CLIENTE
         Cliente cliente = null;
         System.out.print("Cliente tem cadastro? (s/n): ");
         String temCadastro = scanner.nextLine();
@@ -101,10 +98,8 @@ public class Principal {
             System.out.println("Pedido anonimo - sem acumulo de XP.");
         }
 
-        // 3. CRIAR PEDIDO
         Pedido pedido = new Pedido(cliente, atendente);
 
-        // 4. ADICIONAR ITENS
         boolean continuar = true;
         while (continuar) {
             System.out.println("\n--- CARDAPIO ---");
@@ -134,11 +129,9 @@ public class Principal {
             pedido.adicionarItem(produto, quantidade);
         }
 
-        // 5. CALCULAR TOTAL
         double total = pedido.calcularTotal();
         System.out.println("\nSubtotal: R$ " + String.format("%.2f", total));
 
-        // 6. APLICAR PROMOÇÃO (Dia de Evento Geek - 10% nas bebidas)
         System.out.print("Hoje e Dia de Evento Geek? (s/n): ");
         String eventoGeek = scanner.nextLine();
 
@@ -150,7 +143,6 @@ public class Principal {
             System.out.println("Total com desconto: R$ " + String.format("%.2f", total));
         }
 
-        // 7. OPÇÃO DE PAGAMENTO
         System.out.println("\n--- PAGAMENTO ---");
         System.out.println("1 - Pagar com XP acumulado");
         System.out.println("2 - Pagar normalmente");
@@ -160,7 +152,6 @@ public class Principal {
 
         if (opcaoPagamento == 3) {
             System.out.println("Compra cancelada. Voltando ao menu principal.");
-            // Estoque não foi alterado pois só baixa no adicionarItem
             return;
         }
 
@@ -183,23 +174,10 @@ public class Principal {
             }
         }
 
-        // 8. FINALIZAR PEDIDO
-        System.out.println("\n--- PEDIDO FINALIZADO ---");
-        System.out.println("Numero da comanda: " + pedido.getNumeroPedido());
-        System.out.println("Atendente: " + atendente.getNome());
-
-        if (cliente != null) {
-            System.out.println("Cliente: " + cliente.getNome() + " (CPF: " + cliente.getCpf() + ")");
-        } else {
-            System.out.println("Cliente: ANONIMO");
-        }
-
-        System.out.println("\nItens do pedido:");
         pedido.exibirResumo();
 
         System.out.println("\nTotal pago: R$ " + String.format("%.2f", total));
 
-        // 9. ACUMULAR XP (se houver cliente)
         if (cliente != null && opcaoPagamento != 3) {
             CalculadoraPontos calculadora = new CalculadoraPontos();
             calculadora.calcularPontos(pedido);
@@ -216,11 +194,9 @@ public class Principal {
                 totalBebidas += item.getSubtotal();
             }
         }
-        return totalBebidas * 0.10; // 10% de desconto
+        return totalBebidas * 0.10; 
     }
 
-    
-    //FIM AQUI
 
     private static void carregarProdutosIniciais(CadastroProduto cardapio) {
         cardapio.adicionarProduto(new Bebidas("Cafe do Programador", 8.50, 101, 15, "M", 120, true));
@@ -482,9 +458,6 @@ public class Principal {
 
         System.out.print("Novo nome: ");
         cliente.setNome(scanner.nextLine());
-
-        System.out.print("Novo saldo XP: ");
-        cliente.setSaldoXP(lerDouble(scanner));
 
         System.out.println("Cliente atualizado com sucesso.");
     }

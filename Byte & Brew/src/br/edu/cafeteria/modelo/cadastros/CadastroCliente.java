@@ -12,7 +12,6 @@ public class CadastroCliente {
 		this.totalClientes = 0;
 	}
 	
-	 // Método para cadastrar cliente STANDARD (apenas nome e cpf)
     public void cadastrarStandard(String nome, String cpf) {
     	if (buscarCpf(cpf) != null) {
     		System.out.println("   CPF ja cadastrado!");
