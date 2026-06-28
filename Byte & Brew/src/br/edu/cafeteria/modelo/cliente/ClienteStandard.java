@@ -6,7 +6,6 @@ public class ClienteStandard extends Cliente {
 		
 	}
 
-	// pessoa b: implementar método acumularXp() polimórfico
 	@Override
 	public void acumularXp(double valorGasto) {
 		this.setSaldoXP(this.getSaldoXP() + valorGasto);

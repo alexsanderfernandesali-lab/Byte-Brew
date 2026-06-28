@@ -157,7 +157,7 @@ public class Principal {
 
         if (opcaoPagamento == 1) {
             if (cliente != null && cliente.getSaldoXP() > 0) {
-                double xpEmReais = cliente.getSaldoXP(); // 1 XP = R$ 1,00
+                double xpEmReais = cliente.getSaldoXP()/10; // 1 XP = R$ 1,00
                 if (xpEmReais >= total) {
                     System.out.println("Pagamento realizado com XP!");
                     cliente.setSaldoXP(cliente.getSaldoXP() - total);
@@ -165,7 +165,7 @@ public class Principal {
                 } else {
                     System.out.println("Saldo XP insuficiente. Pagando com XP disponivel e complementando.");
                     total -= xpEmReais;
-                    cliente.setSaldoXP(0.0);
+                    cliente.setSaldoXP(0);
                     System.out.println("Saldo restante a pagar: R$ " + String.format("%.2f", total));
                     System.out.println("Pagando o restante normalmente.");
                 }

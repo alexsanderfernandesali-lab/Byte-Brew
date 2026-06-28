@@ -23,10 +23,30 @@ public class CadastroProduto {
         }
         System.out.println("\n=== CARDÁPIO ===");
         for (Produto p : listaProdutos) {
-            System.out.println("Código: " + p.getCodigo() 
+            // Imprime as informações básicas de todo Produto
+            System.out.print("Código: " + p.getCodigo() 
                 + " | Nome: " + p.getNome() 
-                + " | Preço: R$ " + p.getPreco() 
-                + " | Estoque: " + p.getEstoque());
+                + " | Preço: R$ " + p.getPreco());
+
+            // Verifica se o produto é uma Bebida
+            if (p instanceof br.edu.cafeteria.modelo.produto.Bebidas) {
+                br.edu.cafeteria.modelo.produto.Bebidas b = (br.edu.cafeteria.modelo.produto.Bebidas) p;
+                
+                System.out.println(" | Tamanho: " + b.getTamanho()
+                    + " | Cafeína: " + b.getCafeina() + "mg");
+            } 
+            // Verifica se o produto é uma Comida
+            else if (p instanceof br.edu.cafeteria.modelo.produto.Comidas) {
+                br.edu.cafeteria.modelo.produto.Comidas c = (br.edu.cafeteria.modelo.produto.Comidas) p;
+                
+                System.out.println(" | Tempo de Preparo: " + c.getTempo() + " min"
+                    + " | Vegano: Sim"
+                    + " | Sem Glúten: Sim" );
+            } 
+            // Caso seja um produto base
+            else {
+                System.out.println();
+            }
         }
     }
 
