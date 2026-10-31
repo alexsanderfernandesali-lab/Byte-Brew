@@ -1,6 +1,7 @@
 package br.edu.cafeteria.app;
 
 import br.edu.cafeteria.modelo.atendente.Atendente;
+import conexao.ClienteDAO;
 import br.edu.cafeteria.modelo.cadastros.CadastroAtendente;
 import br.edu.cafeteria.modelo.cadastros.CadastroCliente;
 import br.edu.cafeteria.modelo.cadastros.CadastroProduto;
@@ -11,12 +12,16 @@ import br.edu.cafeteria.modelo.produto.Produto;
 import br.edu.cafeteria.modelo.pedido.*;
 import br.edu.cafeteria.servico.*;
 import java.util.Scanner;
+import conexao.ConexaoBanco;
+import java.sql.Connection;
 
 public class Principal {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+    	Teste();
+    	Scanner scanner = new Scanner(System.in);
         CadastroProduto cardapio = new CadastroProduto();
-        CadastroCliente cadastroCliente = new CadastroCliente();
+        ClienteDAO dao = new ClienteDAO();
+        CadastroCliente cadastroCliente = new CadastroCliente(dao);
         CadastroAtendente cadastroAtendente = new CadastroAtendente();
 
         carregarProdutosIniciais(cardapio);
@@ -62,6 +67,17 @@ public class Principal {
         scanner.close();
     }
     
+    private static void Teste() {
+    System.out.println("Testando conexão...");
+    
+    Connection conexao = ConexaoBanco.getConexao();
+    
+    if (conexao != null) {
+        System.out.println("Conectado ao banco ByteAndBrew com sucesso!");
+    } else {
+        System.out.println("Falha na conexão.");
+    }
+    }
 
     private static void abrirNovoPedido(Scanner scanner, CadastroProduto cardapio,
                                         CadastroCliente cadastroCliente,
